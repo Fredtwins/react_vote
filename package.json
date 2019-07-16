@@ -1,0 +1,79 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "umi dev UMI_ENV=dev",
+    "dev": "umi dev UMI_ENV=dev",
+    "build": "umi build",
+    "test": "umi test",
+    "lint:es": "eslint --ext .js src mock tests",
+    "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
+    "precommit": "lint-staged"
+  },
+  "dependencies": {
+    "antd-mobile": "^2.2.13",
+    "classnames": "^2.2.6",
+    "dva": "^2.5.0-beta.2",
+    "js-base64": "^2.5.1",
+    "js-cookie": "^2.2.0",
+    "localStorage": "^1.0.4",
+    "moment": "^2.24.0",
+    "postcss-px-to-viewport": "^1.1.0",
+    "postcss-px2rem": "^0.3.0",
+    "postcss-px2rem-exclude": "^0.0.6",
+    "react": "^16.7.0",
+    "react-document-title": "^2.0.3",
+    "react-dom": "^16.7.0",
+    "react-rater": "^5.1.0",
+    "umi-request": "^1.0.7",
+    "urijs": "^1.19.1",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.40",
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/preset-react": "^7.0.0-beta.40",
+    "@babel/preset-stage-0": "^7.0.0",
+    "@types/jest": "^23.3.12",
+    "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-test-renderer": "^16.0.3",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.0.0-beta.0",
+    "babel-plugin-lodash": "^3.3.2",
+    "babel-plugin-react-transform": "^3.0.0",
+    "eslint": "^5.4.0",
+    "eslint-config-umi": "^1.4.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "react-test-renderer": "^16.7.0",
+    "swiper": "^4.5.0",
+    "tslint": "^5.12.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "tslint-react": "^3.6.0",
+    "umi": "^2.6.1",
+    "umi-plugin-react": "^1.6.0",
+    "umi-types": "^0.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint --fix",
+      "git add"
+    ],
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "theme": {
+    "brand-primary": "#ff7847",
+    "color-text-base": "#333",
+    "brand-wait": "#ff7847"
+  }
+}

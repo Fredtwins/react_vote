@@ -1,0 +1,26 @@
+.globalTitleBox{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  .content{
+    font-size: 36px;
+    font-weight:bold;
+    color:rgba(25,25,25,1);
+    line-height:52px;
+    margin: 0 40px;
+  }
+
+  .leftIcon, 
+  .rightIcon{
+    width: 46px;
+    height: 46px;
+    display: inline-block;
+    background-image: url('../../assets/title-icon.png');
+    background-size: cover; 
+  }
+  .rightIcon{
+    transform: scaleX(-1);
+  }
+}

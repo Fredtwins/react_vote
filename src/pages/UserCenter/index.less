@@ -1,0 +1,59 @@
+.wrapBox {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-image: url('../../assets/user-centent-bg.png');
+  background-size: cover;
+
+  .userInfoBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .avatarBox {
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 120px 0 60px;
+
+      img {
+        width: 100%;
+      }
+
+      .gray {
+        -webkit-filter: grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
+        -o-filter: grayscale(100%);
+        filter: grayscale(100%);
+        filter: gray;
+      }
+    }
+
+    .infoBox {
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      display: flex;
+      justify-content: center;
+
+      .loginBtn {
+        padding: 0 20px;
+        border-right: 4px solid #333;
+      }
+
+      .registerBtn {
+        padding: 0 20px;
+      }
+    }
+  }
+
+
+  // :global {
+    
+  // }
+
+}

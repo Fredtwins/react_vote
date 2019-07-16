@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- set `maximum-scale` for some compatibility issues -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+        <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+        <script src="//g.alicdn.com/fdilab/lib3rd/viewport-units-buggyfill/0.6.2/??viewport-units-buggyfill.hacks.min.js,viewport-units-buggyfill.min.js"></script>
+        <script>
+          if ('addEventListener' in document) {
+            document.addEventListener('DOMContentLoaded', function() {
+              FastClick.attach(document.body);
+            }, false);
+          }
+          if(!window.Promise) {
+            document.writeln('<script src="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
+          }
+        </script>
+      </head>
+<body>
+  <script>
+  window.onload = function () {
+    window.viewportUnitsBuggyfill.init({
+      hacks: window.viewportUnitsBuggyfillHacks
+    });
+  }
+</script>
+<script>
+  Object.setPrototypeOf =
+Object.setPrototypeOf || { __proto__: null } instanceof Object
+  ? (function() {
+      function has(obj, k) {
+        return Object.prototype.hasOwnProperty.call(obj, k);
+      }
+      var getPrototypeOf = Object.getPrototypeOf;
+      Object.getPrototypeOf = function gpo(O) {
+        if (O == undefined)
+          throw TypeError("Cannot convert undefined or null to object");
+        O = Object(O);
+        if (has(O, "__proto__")) return O.__proto__;
+        if (getPrototypeOf) return getPrototypeOf(O);
+        if (
+          typeof O.constructor === "function" &&
+          O instanceof O.constructor
+        ) {
+          return O.constructor.prototype;
+        }
+        return O instanceof Object ? Object.prototype : null;
+      };
+
+      return function mixinProperties(obj, proto) {
+        Object.defineProperty(obj, "__proto__", {
+          value: proto,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        });
+        var keys = Object.getOwnPropertyNames(proto);
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          if (!has(obj, key)) {
+            var descriptor = Object.getOwnPropertyDescriptor(proto, key);
+            descriptor.configurable = true;
+            Object.defineProperty(obj, key, descriptor);
+          }
+        }
+        return obj;
+      };
+    })()
+  : function setProtoOf(obj, proto) {
+      obj.__proto__ = proto;
+      return obj;
+    };
+</script>
+
+  <div id="root"></div>
+</body>
+</html>
+<script language="javascript" type="text/javascript">
+  NTKF_PARAM = {
+    siteid: "kf_10526", //企业ID，为固定值，必填
+    settingid: "kf_10526_1553134272227" //接待组ID，为固定值，必填
+    // uid:"12323",		                //用户ID，未登录可以为空，但不能给null，uid赋予的值显示到小能客户端上
+    // uname:"eminyli@163.com",		    //用户名，未登录可以为空，但不能给null，uname赋予的值显示到小能客户端上
+    // isvip:"0",                          //是否为vip用户，0代表非会员，1代表会员，取值显示到小能客户端上
+    // userlevel:"1",		                //网站自定义会员级别，0-N，可根据选择判断，取值显示到小能客户端上
+    // erpparam:"abc" 关键词 访客地域 url ip                     //erpparam为erp功能的扩展字段，可选，购买erp功能后用于erp功能集成
+  };
+</script>
+<!-- 小能客服基础脚本加载 -->
+<script
+  type="text/javascript"
+  src="http://dl.ntalker.com/js/xn6/ntkfstat.js?siteid=kf_10526"
+  charset="utf-8"
+></script>

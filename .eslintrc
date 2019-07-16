@@ -1,0 +1,17 @@
+{
+  "extends": "eslint-config-umi",
+  "rules": {
+    "indent": ["error", 2],
+    "camelcase": 0,
+    "quotes": ["error", "single"],
+    "no-extra-boolean-cast": 2,
+    "no-extra-parens": 0,
+    "no-undefined": 0,
+    "no-unused-expressions": 0,
+    "no-unused-labels": 2,
+    "no-unused-vars": [2, {
+      "vars": "all",
+      "args": "none"
+  }]
+  }
+}
