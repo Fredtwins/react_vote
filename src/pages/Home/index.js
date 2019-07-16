@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import Swiper from 'swiper/dist/js/swiper.js';
 import styles from './index.less';
 // import Router from 'umi/router';
-import GlobalTabBar from '@/components/global-tabbar';
+// import GlobalTabBar from '@/components/global-tabbar';
 import GlobalTitleBox from '@/components/global-titlebox';
 
 import logo from '@/assets/logo-1.png';
@@ -35,7 +35,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-  
+
     new Swiper('#box2Banner', {
       slidesPerView: 'auto',
       spaceBetween: 10,
@@ -47,10 +47,6 @@ class Home extends Component {
   render() {
     return (
       <div className={styles.wrapBox}>
-        {/* logo */}
-        <div className={styles.logoBox}>
-          <img src={logo} alt="logo" />
-        </div>
 
         {/* 轮播图 */}
         <Carousel
@@ -170,7 +166,7 @@ class Home extends Component {
         </div>
 
 
-        <GlobalTabBar current={0} />
+        {/* <GlobalTabBar current={0} /> */}
       </div>
     );
   }
