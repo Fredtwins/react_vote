@@ -74,7 +74,6 @@ class Home extends Component {
           ))}
         </Carousel>
 
-
         {/* <GlobalTabBar current={0} /> */}
         {/* 评选你最喜爱的一位教师 */}
         <div className={styles.contentbox}>
