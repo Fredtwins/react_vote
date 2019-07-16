@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Carousel } from 'antd-mobile';
-import classnames from 'classnames';
+// import classnames from 'classnames';
 import Swiper from 'swiper/dist/js/swiper.js';
 import styles from './index.less';
 // import Router from 'umi/router';
 // import GlobalTabBar from '@/components/global-tabbar';
-import GlobalTitleBox from '@/components/global-titlebox';
+// import GlobalTitleBox from '@/components/global-titlebox';
 
-import logo from '@/assets/logo-1.png';
-import box2Swiper1 from '@/assets/box2-swiper-1.png';
-import box2Swiper2 from '@/assets/box2-swiper-2.png';
-import box2Swiper3 from '@/assets/box2-swiper-3.png';
-import box2Swiper4 from '@/assets/box2-swiper-4.png';
+// import logo from '@/assets/logo-1.png';
+// import box2Swiper1 from '@/assets/box2-swiper-1.png';
+// import box2Swiper2 from '@/assets/box2-swiper-2.png';
+// import box2Swiper3 from '@/assets/box2-swiper-3.png';
+// import box2Swiper4 from '@/assets/box2-swiper-4.png';
 
 @connect(state => {
   return {
@@ -77,10 +77,10 @@ class Home extends Component {
         {/* <GlobalTabBar current={0} /> */}
         {/* 评选你最喜爱的一位教师 */}
         <div className={styles.contentbox}>
-            <h2>评选你最喜爱的一位教师</h2>
-            <select name="" id="">
-              <option value="11">11</option>
-            </select>
+          <h2 onClick={() => { alert(90) }}>评选你最喜爱的一位教师</h2>
+          <select name="" id="">
+            <option value="11">11</option>
+          </select>
         </div>
       </div>
     );
