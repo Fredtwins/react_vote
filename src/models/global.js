@@ -3,7 +3,7 @@ export default {
   namespace: 'global',
   state: {
     isAgree:false,
-    title:'牵引力',
+    title:'教师投票',
     isShowQuickMenu: false,
   },
 
