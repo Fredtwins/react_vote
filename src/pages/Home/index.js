@@ -74,99 +74,15 @@ class Home extends Component {
           ))}
         </Carousel>
 
-        {/* box1 */}
-        <div className={styles.box1}>
-          <GlobalTitleBox>拿下教师资格证，让你从此改变</GlobalTitleBox>
-        </div>
-
-
-        {/* box2 */}
-        <div className={styles.box2}>
-          <GlobalTitleBox>拿证，还需趁早</GlobalTitleBox>
-
-          <div id="box2Banner" className="swiper-container">
-            <div className="swiper-wrapper">
-              <div className="swiper-slide">
-                <div className={styles.box2Item}>
-                  <img src={box2Swiper1} alt="非师范即将限考" />
-                  <span>非师范即将限考</span>
-                </div>
-              </div>
-
-              <div className="swiper-slide">
-                <div className={styles.box2Item}>
-                  <img src={box2Swiper2} alt="考试难度加大" />
-                  <span>考试难度加大</span>
-                </div>
-              </div>
-
-              <div className="swiper-slide">
-                <div className={styles.box2Item}>
-                  <img src={box2Swiper3} alt="学习时间延长" />
-                  <span>学习时间延长</span>
-                </div>
-              </div>
-
-
-              <div className="swiper-slide">
-                <div className={styles.box2Item}>
-                  <img src={box2Swiper4} alt="通关率越来越低" />
-                  <span>通关率越来越低</span>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-
-
-        {/* box3 */}
-        <div className={styles.box3}>
-          <div className={styles.fromBox}>
-            <div className={styles.title}>专业老师为你解答</div>
-            <input className={styles.iphoneInput} placeholder="输入你的手机号码" />
-            <textarea resize="none" className={styles.qaInput} placeholder="输入更多问题"></textarea>
-            <div className={styles.subBtn}>
-              提交 <i className={styles.subIcon}></i>
-            </div>
-          </div>
-        </div>
-
-        {/* box4 */}
-        <div className={styles.box4}>
-          <GlobalTitleBox>拿下教师资格证，让你从此改变</GlobalTitleBox>
-          <ul className={styles.box4List}>
-            <li className={styles.box4Item}>
-              <i className={classnames(styles.box4Icon, styles.box4Icon1)}></i>
-              <p className={styles.box4Title}>16年上市公司职场教育经验</p>
-              <p className={styles.box4STitle}>值得信赖</p>
-            </li>
-
-            <li className={styles.box4Item}>
-              <i className={classnames(styles.box4Icon, styles.box4Icon2)}></i>
-              <p className={styles.box4Title}>资深教研团队</p>
-              <p className={styles.box4STitle}>学习效果有保障</p>
-            </li>
-
-
-            <li className={styles.box4Item}>
-              <i className={classnames(styles.box4Icon, styles.box4Icon3)}></i>
-              <p className={styles.box4Title}>360度贴心教学服务</p>
-              <p className={styles.box4STitle}>无忧学习</p>
-            </li>
-
-
-            <li className={styles.box4Item}>
-              <i className={classnames(styles.box4Icon, styles.box4Icon4)}></i>
-              <p className={styles.box4Title}>智能题库学习系统</p>
-              <p className={styles.box4STitle}>考试通关有保障</p>
-            </li>
-          </ul>
-        </div>
-
 
         {/* <GlobalTabBar current={0} /> */}
+        {/* 评选你最喜爱的一位教师 */}
+        <div className={styles.contentbox}>
+            <h2>评选你最喜爱的一位教师</h2>
+            <select name="" id="">
+              <option value="11">11</option>
+            </select>
+        </div>
       </div>
     );
   }
