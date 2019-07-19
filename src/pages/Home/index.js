@@ -30,12 +30,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-
-    new Swiper('#box2Banner', {
-      slidesPerView: 'auto',
-      spaceBetween: 10,
-      slidesOffsetBefore: 18,
-    });
     const { dispatch } = this.props;
   }
 
@@ -119,12 +113,13 @@ class Home extends Component {
           maskClosable={true}
         >
           <div>
-            <span>
+            <div className={styles.titlemodal}>投票理由</div>
+            <div className={styles.titlemodalfirst}>
               亲爱的学员：
-            </span>
-            <span>
+            </div>
+            <div className={styles.titlecontentmodal}>
             请写下支持老师的理由或关于老师的暖心故事，不然你最爱的老师将无法得到你宝贵的一票。（20-500字）
-            </span>
+            </div>
             <textarea
               value={this.state.value}
               onChange={this.handleChange.bind(this)}
@@ -132,9 +127,12 @@ class Home extends Component {
               className={styles.note_textarea}
               placeholder="请输入内容..."
             />
-            <span className={styles.note_number}>{this.state.value.length}/500</span>
+            <div className={styles.reason}>
+              <span className={styles.reasonfont}>亲，请填写支持老师的理由</span>
+              <span className={styles.note_number}>{this.state.value.length}/500</span>
+            </div>
             <Button onClick={() => this.saveNote()} className="save">
-              确定
+              提交
             </Button>
           </div>
         </Modal>
