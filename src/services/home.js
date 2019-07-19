@@ -29,5 +29,7 @@ export async function addInterest(params) {
 
 // 投票城市选择渲染
 export async function Listcity(params) {
-  return request(`/api/deptByToken?${stringify(params)}`);
+  return request(`/api/deptByToken?${stringify(params)}`, {
+    interFaceType: 'jq'
+  });
 }

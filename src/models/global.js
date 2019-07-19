@@ -1,4 +1,4 @@
-// import { Listcity } from '@/services/home.js'
+import { Listcity } from '@/services/home.js'
 // import { Listcity } from '../services/home'
 
 export default {
@@ -10,10 +10,11 @@ export default {
   },
 
   effects: {
-    // *getListcity({ payload }, { call, put }) {
-    //   const data = yield call(Listcity, payload);
-    //   return data
-    // }
+    // 投票城市选择渲染
+    *getListcity({ payload }, { call, put }) {
+      const data = yield call(Listcity, payload);
+      return data
+    }
     // *loginByPhone({ payload }, { call, put }) {
     //   //call 执行异步函数  put 发出一个action
     //   const data = yield call(loginByPhone, payload);

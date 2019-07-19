@@ -6,6 +6,7 @@ import Swiper from 'swiper/dist/js/swiper.js';
 import styles from './index.less';
 // import Router from 'umi/router';
 import box2Swiper1 from '@/assets/box2-swiper-1.png';
+import LoadMore from '@/components/load-more';
 
 @connect(state => {
   return {
@@ -26,12 +27,22 @@ class Home extends Component {
       imgHeight: 176,
       showNote: false,
       value: '',
-      reasonFont: ''
+      reasonFont: '',
+      isLoading: false,
+      showListmore: true
     };
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
+    dispatch({
+      type: 'global/getListcity',
+      payload: {
+        token: '80a84a8b8000016b9bcaab6680000090'
+      }
+    }).then(res => {
+      console.log(res)
+    })
   }
 
   // 关闭弹窗方法
@@ -79,9 +90,22 @@ class Home extends Component {
       })
     }
   }
+  // 点击加载更多
+  ClickMore = () => {
+    this.setState({
+      isLoading: true,
+      showListmore: false
+    })
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+        showListmore: true
+      })
+    }, 3000)
+  }
 
   render() {
-    const { showNote, reasonFont } = this.state;
+    const { showNote, reasonFont, showListmore } = this.state;
     return (
       <div className={styles.wrapBox}>
         {/* 评选你最喜爱的一位教师 */}
@@ -91,35 +115,31 @@ class Home extends Component {
             <option value="11">11</option>
           </select> */}
           <div className={styles.imgBox}>
-              <img src={box2Swiper1} alt="图片"/>
-              <div>校长推荐语:</div>
-              <br/>
-              <div>最受学员喜爱的师!</div>
-              <div>张兰老师</div>
-              <div className={styles.buttonBox} onClick={this.ClickBtn}>
-                投票
-              </div>
+            <img src={box2Swiper1} alt="图片"/>
+            <div className={styles.teachlist}>张兰老师</div>
+            <div className={styles.teachwar}>校长推荐语：最受学员喜爱的老师！最受学员喜爱的老师…</div>
+            <div className={styles.buttonBox} onClick={this.ClickBtn}>
+              投票
             </div>
-            <div className={styles.imgBox}>
-              <img src={box2Swiper1} alt="图片"/>
-              <div>校长推荐语:</div>
-              <br/>
-              <div>最受学员喜爱的师!</div>
-              <div>张兰老师</div>
-              <div className={styles.buttonBox}>
-                投票
-              </div>
-            </div>
-            <div className={styles.imgBox}>
-              <img src={box2Swiper1} alt="图片"/>
-              <div>校长推荐语:</div>
-              <br/>
-              <div>最受学员喜爱的师!</div>
-              <div>张兰老师</div>
-              <div className={styles.buttonBox}>
-                投票
-              </div>
           </div>
+          <div className={styles.imgBox}>
+            <img src={box2Swiper1} alt="图片"/>
+            <div className={styles.teachlist}>张兰老师</div>
+            <div className={styles.teachwar}>校长推荐语：最受学员喜爱的老师！最受学员喜爱的老师…</div>
+            <div className={styles.buttonBox}>
+              投票
+            </div>
+          </div>
+          {
+            showListmore ?
+            (
+              <div className={styles.bottonmore} onClick={this.ClickMore}>
+                加载更多
+              </div>
+            ) : (
+              <LoadMore loadMore={this.state.isLoading}/>
+            )
+          }
         </div>
         <Modal
           visible={showNote}
@@ -153,6 +173,7 @@ class Home extends Component {
             </Button>
           </div>
         </Modal>
+
       </div>
     );
   }

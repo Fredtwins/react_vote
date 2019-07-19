@@ -9,7 +9,6 @@ import { Toast } from 'antd-mobile';
 import fetch from 'dva/fetch';
 import URI from 'urijs';
 import router from 'umi/router';
-// import Taro from './Factory.js';
 
 Toast.mask = false;
 
@@ -55,6 +54,8 @@ const toastTime = 1.5; //秒
 // });
 
 export default function request(url, option) {
+  // console.log(url)
+  // console.log(option)
   return new Promise((resolve, reject) => {
     const defaultOptions = {
       credentials: 'include',
@@ -63,16 +64,16 @@ export default function request(url, option) {
       ...defaultOptions,
       ...option,
     };
-    let interFaceType = newOptions.interFaceType || 'hj';
+    let interFaceType = newOptions.interFaceType || 'jq';
     if (interFaceType !== 'normal') {
       if (interFaceType && CONFIG.obj[interFaceType]) {
         url = CONFIG.obj[interFaceType] + '/' + url;
       } else {
-        url = CONFIG.obj.hj + '/' + url;
+        url = CONFIG.obj.jq + '/' + url;
       }
     }
     let UrlParams = new URI(window.location.href).search(true);
-    const token = UrlParams.token || Taro.getStorageSync('token');
+    const token = UrlParams.token || localStorage.getItem('token');
     if (
       newOptions.method === 'post' ||
       newOptions.method === 'put' ||

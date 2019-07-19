@@ -13,7 +13,7 @@
 
  export default class LoadMore extends Component {
    render() {
-     const { LoadMore } = this.props;
+     const { loadMore } = this.props;
      return (
         <div className={styles.loadMore}>
           {
