@@ -25,7 +25,8 @@ class Home extends Component {
       ],
       imgHeight: 176,
       showNote: false,
-      value: ''
+      value: '',
+      reasonFont: ''
     };
   }
 
@@ -58,13 +59,29 @@ class Home extends Component {
   }
   //编辑保存笔记弹层
   saveNote = () => {
-    this.setState({
-      showNote: false
-    })
+    const { value } = this.state;
+    if (value.length === 0) {
+      this.setState({
+        reasonFont: '亲，请填写支持老师的理由'
+      })
+    } else if (value.length < 20) {
+      this.setState({
+        reasonFont: '亲，最少输入20个中文字'
+      })
+    } else {
+      this.setState({
+        reasonFont: ''
+      })
+    }
+    if (value.length > 20) {
+      this.setState({
+        showNote: false
+      })
+    }
   }
 
   render() {
-    const { showNote } = this.state;
+    const { showNote, reasonFont } = this.state;
     return (
       <div className={styles.wrapBox}>
         {/* 评选你最喜爱的一位教师 */}
@@ -128,7 +145,7 @@ class Home extends Component {
               placeholder="请输入内容..."
             />
             <div className={styles.reason}>
-              <span className={styles.reasonfont}>亲，请填写支持老师的理由</span>
+              <span className={styles.reasonfont}>{reasonFont}</span>
               <span className={styles.note_number}>{this.state.value.length}/500</span>
             </div>
             <Button onClick={() => this.saveNote()} className="save">
