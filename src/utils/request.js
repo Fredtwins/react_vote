@@ -9,7 +9,7 @@ import { Toast } from 'antd-mobile';
 import fetch from 'dva/fetch';
 import URI from 'urijs';
 import router from 'umi/router';
-import Taro from './Factory.js';
+// import Taro from './Factory.js';
 
 Toast.mask = false;
 

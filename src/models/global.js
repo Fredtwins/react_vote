@@ -1,3 +1,5 @@
+// import { Listcity } from '@/services/home.js'
+// import { Listcity } from '../services/home'
 
 export default {
   namespace: 'global',
@@ -8,20 +10,13 @@ export default {
   },
 
   effects: {
-
+    // *getListcity({ payload }, { call, put }) {
+    //   const data = yield call(Listcity, payload);
+    //   return data
+    // }
     // *loginByPhone({ payload }, { call, put }) {
     //   //call 执行异步函数  put 发出一个action
     //   const data = yield call(loginByPhone, payload);
-    //   return data;
-    // },
-    // *getUserInfo({ payload }, { call, put }) {
-    //   //call 执行异步函数  put 发出一个action
-    //   const data = yield call(getUserInfo, payload);
-    //   return data;
-    // },
-    // *updateUserInfo({ payload }, { call, put }) {
-    //   //call 执行异步函数  put 发出一个action
-    //   const data = yield call(updateUserInfo, payload);
     //   return data;
     // },
   },

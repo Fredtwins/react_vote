@@ -36,7 +36,7 @@ class Home extends Component {
       spaceBetween: 10,
       slidesOffsetBefore: 18,
     });
-
+    const { dispatch } = this.props;
   }
 
   // 关闭弹窗方法
@@ -73,30 +73,6 @@ class Home extends Component {
     const { showNote } = this.state;
     return (
       <div className={styles.wrapBox}>
-
-        {/* 轮播图 */}
-        <Carousel
-          autoplay={false}
-          infinite
-        >
-          {this.state.bannerList.map((item, index) => (
-            <a
-              key={index}
-              href="./Downloadpage"
-              style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
-            >
-              <img
-                src={item}
-                alt=""
-                style={{ width: '100%', verticalAlign: 'top' }}
-                onLoad={() => {
-                  window.dispatchEvent(new Event('resize'));
-                  this.setState({ imgHeight: 'auto' });
-                }}
-              />
-            </a>
-          ))}
-        </Carousel>
         {/* 评选你最喜爱的一位教师 */}
         <div className={styles.contentbox}>
           <h2 onClick={() => { alert(90) }}>评选你最喜爱的一位教师</h2>
