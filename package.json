@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "PORT=3000 umi dev UMI_ENV=dev",
+    "start": "PORT=8000 umi dev UMI_ENV=dev",
     "dev": "umi dev UMI_ENV=dev",
     "build": "umi build",
     "test": "umi test",

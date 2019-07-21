@@ -1,4 +1,4 @@
-import { Listcity } from '@/services/home.js'
+import { Listcity, MessageList } from '@/services/home.js'
 // import { Listcity } from '../services/home'
 
 export default {
@@ -13,6 +13,10 @@ export default {
     // 投票城市选择渲染
     *getListcity({ payload }, { call, put }) {
       const data = yield call(Listcity, payload);
+      return data
+    },
+    *MessageList({ payload }, { call, put }) {
+      const data = yield call(MessageList, payload);
       return data
     }
     // *loginByPhone({ payload }, { call, put }) {

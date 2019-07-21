@@ -41,6 +41,18 @@ class Home extends Component {
         token: '80a84a8b8000016b9bcaab6680000090'
       }
     }).then(res => {
+      // console.log(res)
+    })
+    // 获取教师寄语的接口
+    dispatch({
+      type: 'global/MessageList',
+      payload: {
+        actid: 1,
+        pageSize: 1,
+        pageNum: 1
+        // token: '80a84a8b8000016b9bcaab6680000090',
+      }
+    }).then(res => {
       console.log(res)
     })
   }
@@ -140,6 +152,24 @@ class Home extends Component {
               <LoadMore loadMore={this.state.isLoading}/>
             )
           }
+        </div>
+        {/* top10教师排行榜 */}
+        <div className={styles.ranking}>
+          {/* 头部 */}
+          <div className={styles.rankingTop}></div>
+          <div className={styles.rankingBox}>
+            <div className={styles.contnetBox}>
+              <ul className={styles.titleBox}>
+                <li>排名</li>
+                <li>老师</li>
+                <li>学员评价</li>
+              </ul>
+              {/* 列表 */}
+              <div className={styles.ranking_list}>
+
+              </div>
+            </div>
+          </div>
         </div>
         <Modal
           visible={showNote}

@@ -1,4 +1,5 @@
 import request from '@/utils/request.js';
+import request1 from '@/utils/req.js';
 import {
   stringify
 } from 'qs';
@@ -33,3 +34,17 @@ export async function Listcity(params) {
     interFaceType: 'jq'
   });
 }
+
+// 投票教师寄语
+export async function MessageList (params) {
+  return request1(`/tpSubject/listPage?${stringify(params)}`)
+}
+
+// export async function MessageList (params) {
+//   console.log("ininin", params)
+//   return request1(`/tpSubject/listPage`, {
+//     method: 'POST',
+//     data: params,
+//     headers: { 'Content-Type': 'application/json' }
+//   });
+// }

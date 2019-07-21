@@ -39,6 +39,13 @@ const config: IConfig = {
       },
       changeOrigin: true,
     },
+    '/tpBaseUrl': {
+      target: 'http://10.0.98.227:20060',
+      pathRewrite: {
+        '^/tpBaseUrl': '',
+      },
+      changeOrigin: true,
+    },
     '/authBaseUrl': {
       target: 'http://hangjiah5.beta.hqjy.com',
       pathRewrite: {

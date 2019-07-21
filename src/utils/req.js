@@ -53,7 +53,7 @@ const toastTime = 1.5; //秒
 //   // headers: { 'user_token': Cookie.get('token') }
 // });
 
-export default function request(url, option) {
+export default function request1(url, option) {
   // console.log(url)
   // console.log(option)
   return new Promise((resolve, reject) => {
@@ -64,12 +64,12 @@ export default function request(url, option) {
       ...defaultOptions,
       ...option,
     };
-    let interFaceType = newOptions.interFaceType || 'jq';
+    let interFaceType = newOptions.interFaceType || 'tp';
     if (interFaceType !== 'normal') {
       if (interFaceType && CONFIG.obj[interFaceType]) {
         url = CONFIG.obj[interFaceType] + '/' + url;
       } else {
-        url = CONFIG.obj.jq + '/' + url;
+        url = CONFIG.obj.tp + '/' + url;
       }
     }
     let UrlParams = new URI(window.location.href).search(true);
