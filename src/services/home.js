@@ -50,7 +50,7 @@ export async function getTpSubjectListTop10 (params) {
   return request1(`/tpSubject/list?${stringify(params)}`);
 }
 
-// 省份
+// 校区信息
 export async function getDept (params) {
   // console.log("ininin", params)
   return request(`/api/deptByToken?${stringify(params)}`,{
@@ -67,6 +67,20 @@ export async function putVote (params) {
     method: 'put',
     body: params,
   })
+}
+export async function getCity (params) {
+  return request1(`/tpAddress/list/1/1000/city?attr=province&${stringify(params)}`);
+}
+export async function getProvince (params) {
+  return request1(`/tpAddress/list/1/1000/province`);
+}
+export async function getSchool (params) {
+  console.log("ininin", params)
+  return request1(`/tpAddress/list/1/1000/school?attr=city&${stringify(params)}`);
+}
+export async function getUserInfo (params) {
+  console.log("ininin", params)
+  return request(`/api/userInfo?${stringify(params)}`);
 }
 
 // export async function MessageList (params) {

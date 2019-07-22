@@ -4,7 +4,7 @@ import styles from './index.less';
 import Router from 'umi/router';
 import GlobalTabBar from '@/components/global-tabbar';
 
-import defaultAvatar from '@/assets/default-avatar.png';
+// import defaultAvatar from '@/assets/default-avatar.png';
 
 
 @connect(state => {
@@ -39,7 +39,7 @@ class UserCenter extends Component {
       <div className={styles.wrapBox}>
         <div className={styles.userInfoBox}>
           <div className={styles.avatarBox}>
-            <img className={!isLogin ? styles.gray : null} src={defaultAvatar} alt="" />
+            {/* <img className={!isLogin ? styles.gray : null} src={defaultAvatar} alt="" /> */}
           </div>
 
           <div className={styles.infoBox}>

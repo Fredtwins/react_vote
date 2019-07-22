@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Carousel, Modal, Toast, Button } from 'antd-mobile';
+import { Carousel, Modal, Toast, Button, Picker, List } from 'antd-mobile';
 // import classnames from 'classnames';
 import Swiper from 'swiper/dist/js/swiper.js';
 import styles from './index.less';
 // import Router from 'umi/router';
-import box2Swiper1 from '@/assets/box2-swiper-1.png';
 import LoadMore from '@/components/load-more';
 
 @connect(state => {
@@ -21,8 +20,8 @@ class Home extends Component {
 
     this.state = {
       bannerList: [
-        require('../../assets/banner1.jpg'),
-        require('../../assets/banner2.jpg'),
+        // require('../../assets/banner1.jpg'),
+        // require('../../assets/banner2.jpg'),
       ],
       imgHeight: 176,
       showNote: false,
@@ -39,7 +38,19 @@ class Home extends Component {
       commentList: [],
       showComment: false,
       commentIndex: 1,
-      showModalfont: false
+      showModalfont: false,
+      userId: '',
+      provinceOptionlist: [],
+      cityOptionlist: [],
+      deptOptionlist: [],
+      teacherMobile: null,
+      id: null,
+      userAvatar: null,
+      userName: '',
+      provinceName1: false,
+      cityName: '',
+      deptName: '',
+      provinceName: ''
     };
   }
 
@@ -51,8 +62,9 @@ class Home extends Component {
         token: '80a84a8b8000016b9bcaab6680000090'
       }
     }).then(res => {
-      // console.log(res)
+      console.log(res)
       this.setState({
+        userId: res.data.userId,
         provinceOption: res.data.provinceName,
         cityOption: res.data.cityName,
         deptOption: res.data.deptName
@@ -68,12 +80,62 @@ class Home extends Component {
         // token: '80a84a8b8000016b9bcaab6680000090',
       }
     }).then(res => {
-      // console.log(res);
-      this.setState({
-        teacherList: res.result.list
-      })
+      console.log(res);
+      if (res.code === -1) {
+        Toast.info(res.msg)
+      } else {
+        this.setState({
+          teacherList: res.result.list
+        })
+      }
     })
     this._getTpSubjectListTop10()
+    this.getProvince()
+    this.getUserInfo()
+  }
+  // 获取校区信息
+  getDept() {
+    this.props.dispatch({
+      type: 'global/getDept',
+      payload: {
+        // token: '80a84a8b8000016b9bcaab6680000090',
+        token: '811af8318000016c192c04468200002c',
+        // token: Taro.getStorageSync('token')
+      }
+    }).then(res => {
+      console.log(res.data.deptId)
+      if (res.data.deptId !== 1) {
+        this.setState({
+          provinceName: res.data.provinceName,
+          provinceName1: true,
+          cityName: res.data.cityName.substr(0, 3),
+          deptName: res.data.deptName,
+          userId: res.data.userId
+        }, () => {
+          this.getTpSubjectList()
+        })
+      } else {
+        this.setState({
+          userId: res.data.userId
+        })
+      }
+    })
+  }
+  //获取用户信息
+  getUserInfo() {
+    this.props.dispatch({
+      type: 'global/getUserInfo',
+      payload: {
+        token: '80a84a8b8000016b9bcaab6680000090',
+        // token: Taro.getStorageSync('token')
+      }
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        userName: res.data.nickName ? res.data.nickName : res.data.mobile,
+        userAvatar: res.data.avatar
+      })
+    })
   }
   // 获取投票前十名
   _getTpSubjectListTop10() {
@@ -87,6 +149,53 @@ class Home extends Component {
       })
     })
   }
+  //获取省数据
+  getProvince() {
+    this.props.dispatch({
+      type: 'global/getProvince',
+      payload: {
+        // pageNum:1,
+        // pageSize:300
+        // token: Taro.getStorageSync('token')
+      }
+    }).then(res => {
+      console.log(res.result.list)
+      this.setState({
+        provinceOptionlist: res.result.list
+      })
+    })
+  }
+  //获取市数据
+  getCity = (value) => {
+    this.props.dispatch({
+      type: 'global/getCity',
+      payload: {
+        attrValue: value
+      }
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        cityOptionlist: res.result.list
+      })
+    })
+  }
+  //获取学校数据
+  getSchool = (value) => {
+    this.props.dispatch({
+      type: 'global/getSchool',
+      payload: {
+        attrValue: value
+        // pageNum:1,
+        // pageSize:300
+        // token: Taro.getStorageSync('token')
+      }
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        deptOptionlist: res.result.list
+      })
+    })
+  }
 
   // 关闭弹窗方法
   onClose() {
@@ -96,10 +205,13 @@ class Home extends Component {
   }
 
   // 点击投票开启弹窗
-  ClickBtn = (id) => {
+  ClickBtn = (id, attr5) => {
+    console.log(attr5)
     // console.log(this.state.showModalfont)
     this.setState({
-      showNote: true
+      showNote: true,
+      id: id,
+      teacherMobile: attr5
     })
   }
 
@@ -133,13 +245,13 @@ class Home extends Component {
       dispatch({
         type: 'global/putVote',
         payload: {
-          "subjectId":12,
-          "actId":1,
-          "evaluation":"6666",
-          "userId":"1",
-          "attr1":"13632421158",
-          "attr2":"aaaaa",
-          "userName":"小虾"
+          subjectId: this.state.id,
+          actId: 1,
+          evaluation: value,
+          userId: this.state.userId,
+          attr1: this.state.teacherMobile,
+          attr2: this.state.userAvatar,
+          userName: this.state.userName
         }
       }).then(res => {
         // console.log(res)
@@ -157,10 +269,10 @@ class Home extends Component {
   }
   // 点击加载更多
   ClickMore = () => {
-    console.log(this.props)
+    // console.log(this.props)
     const { dispatch } = this.props;
     const { pageSize } = this.state;
-    console.log(pageSize)
+    // console.log(pageSize)
     this.setState({
       pageSize: pageSize + 2
     }, () => {
@@ -176,6 +288,8 @@ class Home extends Component {
       }).then(res => {
         // console.log(res);
         this.setState({
+          isLoading: false,
+          showListmore: true,
           teacherList: res.result.list
         })
       })
@@ -184,31 +298,15 @@ class Home extends Component {
       isLoading: true,
       showListmore: false
     })
-    setTimeout(() => {
-      this.setState({
-        isLoading: false,
-        showListmore: true
-      })
-    }, 3000)
   }
-  // _getDept() {
-  //   const { dispatch } = this.props;
-  //   dispatch({
-  //     type: 'global/getDept',
-  //     payload: {
-  //       token: '80a84a8b8000016b9bcaab6680000090',
-  //       // token: Taro.getStorageSync('token')
-  //     }
-  //   }).then(res => {
-  //     console.log(res)
-  //     this.setState({
-  //       provinceOption: res.data.provinceName,
-  //     })
-  //   })
-  // }
   // 选择省份
-  onChangecity = () => {
-
+  onChangecity = (val) => {
+    console.log(val)
+    this.getCity(val)
+  }
+  // 选择市区
+  onChangeCity = (val) => {
+    this.getSchool(val)
   }
   handleShowComment(id) {
     console.log(id)
@@ -251,9 +349,27 @@ class Home extends Component {
   }
 
   render() {
-    const { showNote, reasonFont, showListmore, provinceOption, deptOption, cityOption, teacherList, rankingList, commentList, showComment, commentIndex } = this.state;
+    const {
+      showNote,
+      reasonFont,
+      showListmore,
+      provinceOption,
+      deptOption,
+      cityOption,
+      teacherList,
+      rankingList,
+      commentList,
+      showComment,
+      commentIndex,
+      provinceOptionlist,
+      cityOptionlist,
+      deptOptionlist,
+      provinceName1
+    } = this.state;
     return (
       <div className={styles.wrapBoxitem}>
+        <div className={styles.header}>
+        </div>
         {/* 评选你最喜爱的一位教师 */}
         <div className={styles.contentbox}>
           {/* <h2 onClick={() => { alert(90) }}>评选你最喜爱的一位教师</h2> */}
@@ -261,41 +377,141 @@ class Home extends Component {
             <option value="11">11</option>
           </select> */}
           <div className={styles.selection}>
-            <div className={styles.cascader}>
-              <div className={styles.cascader_item}>
-                <span className={styles.title}>省份:</span>
-                <select
-                  defaultValue={provinceOption}
-                  onChange={this.onChangecity}
-                  placeholder="请选择省份">
-                  <option value={provinceOption}>
-                    {provinceOption}
-                  </option>
-                </select>
-              </div>
-              <div className={styles.cascader_item}>
-                <span className={styles.title}>城市:</span>
-                <select
-                  defaultValue={cityOption}
-                  onChange={this.onChangecity}
-                  placeholder="请选择城市">
-                  <option value={cityOption}>
-                    {cityOption}
-                  </option>
-                </select>
-              </div>
-            </div>
-            <div className={styles.cascader_itemone}>
-              <span className={styles.title}>校区:</span>
-              <select
-                defaultValue={deptOption}
-                onChange={this.onChangecity}
-                placeholder="请选择校区">
-                <option value={deptOption}>
-                  {deptOption}
-                </option>
-              </select>
-            </div>
+            <div className={styles.topteach}></div>
+            {
+              provinceName1 &&
+              <Fragment>
+                <div className={styles.cascader}>
+                  <div className={styles.cascader_item}>
+                    <span className={styles.title}>省份:</span>
+                    {/* <select
+                    defaultValue={provinceOption}
+                    onChange={this.onChangecity}
+                    placeholder="请选择省份">
+                    <option value={provinceOption}>
+                      {provinceOption}
+                    </option>
+                  </select> */}
+                    <Picker
+                      title="选择省份"
+                      extra=""
+                      data={provinceOptionlist}
+                      value={provinceOption}
+                      disabled
+                      // key={index}
+                      cols={1}
+                      onChange={this.onChangecity}
+                      className={styles.forss}
+                    >
+                      <List.Item arrow='horizontal'>
+                        {provinceOption}
+                      </List.Item>
+                    </Picker>
+                  </div>
+                  <div className={styles.cascader_item}>
+                    <span className={styles.title}>城市:</span>
+                    <Picker
+                      title="选择城市"
+                      extra=""
+                      data={cityOptionlist}
+                      value={['广东省']}
+                      cols={1}
+                      disabled
+                      onChange={this.onChangeCity}
+                      className={styles.forss}
+                    // className='forss'
+                    >
+                      <List.Item arrow='horizontal'>
+                        {cityOption}
+                      </List.Item>
+                    </Picker>
+                  </div>
+                </div>
+                <div className={styles.cascader_itemone}>
+                  <span className={styles.title}>校区:</span>
+                  <Picker
+                    title="选择城市"
+                    extra=""
+                    data={deptOptionlist}
+                    value={['广东省']}
+                    cols={1}
+                    disabled
+                    className={styles.forss}
+                  // className='forss'
+                  >
+                    <List.Item arrow='horizontal'>
+                      {deptOption}
+                    </List.Item>
+                  </Picker>
+                </div>
+              </Fragment>
+            }
+            {
+              !provinceName1 &&
+              <Fragment>
+                <div className={styles.cascader}>
+                  <div className={styles.cascader_item}>
+                    <span className={styles.title}>省份:</span>
+                    {/* <select
+                    defaultValue={provinceOption}
+                    onChange={this.onChangecity}
+                    placeholder="请选择省份">
+                    <option value={provinceOption}>
+                      {provinceOption}
+                    </option>
+                  </select> */}
+                    <Picker
+                      title="选择省份"
+                      extra=""
+                      data={provinceOptionlist}
+                      value={provinceOption}
+                      // key={index}
+                      cols={1}
+                      onChange={this.onChangecity}
+                      className={styles.forss}
+                    >
+                      <List.Item arrow='horizontal'>
+                        {provinceOption}
+                      </List.Item>
+                    </Picker>
+                  </div>
+                  <div className={styles.cascader_item}>
+                    <span className={styles.title}>城市:</span>
+                    <Picker
+                      title="选择城市"
+                      extra=""
+                      data={cityOptionlist}
+                      value={['广东省']}
+                      cols={1}
+                      onChange={this.onChangeCity}
+                      className={styles.forss}
+                    // className='forss'
+                    >
+                      <List.Item arrow='horizontal'>
+                        {cityOption}
+                      </List.Item>
+                    </Picker>
+                  </div>
+                </div>
+                <div className={styles.cascader_itemone}>
+                  <span className={styles.title}>校区:</span>
+                  <Picker
+                    title="选择城市"
+                    extra=""
+                    data={deptOptionlist}
+                    value={['广东省']}
+                    cols={1}
+                    className={styles.forss}
+                  // className='forss'
+                  >
+                    <List.Item arrow='horizontal'>
+                      {deptOption}
+                    </List.Item>
+                  </Picker>
+                </div>
+              </Fragment>
+            }
+
           </div>
           <div className={styles.imgboxBig}>
             {teacherList.map((item, index) => {
@@ -304,31 +520,24 @@ class Home extends Component {
                   <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
                   <div className={styles.teachlist}>{item.name}</div>
                   <div className={styles.teachwar}>
-                    {item.attr6.substr(0, 33)}{item.attr6.length > 33 && <span>...</span>}
+                    {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span>...</span>}
                   </div>
-                  <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id)}><span className='iconfont iconkongxin' />投票</div>
+                  <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id, item.attr5)}><span className='iconfont iconkongxin' />投票</div>
                 </div>
               )
             })}
-            {/* <div className={styles.imgBox}>
-              <img src={box2Swiper1} alt="图片" />
-              <div className={styles.teachlist}>张兰老师</div>
-              <div className={styles.teachwar}>校长推荐语：最受学员喜爱的老师！最受学员喜爱的老师…</div>
-              <div className={styles.buttonBox}>
-                投票
-              </div>
-            </div> */}
+            {
+              showListmore ?
+                (
+                  <div className={styles.bottonmore} onClick={this.ClickMore}>
+                    加载更多
+                  </div>
+                ) : (
+                  <LoadMore loadMore={this.state.isLoading} />
+                )
+            }
+            <div className={styles.rankingBottom}></div>
           </div>
-          {
-            showListmore ?
-              (
-                <div className={styles.bottonmore} onClick={this.ClickMore}>
-                  加载更多
-              </div>
-              ) : (
-                <LoadMore loadMore={this.state.isLoading} />
-              )
-          }
           {/* top10教师排行榜 */}
           <div className={styles.ranking}>
             {/* 头部 */}
@@ -371,17 +580,17 @@ class Home extends Component {
                                 return (
                                   <div className={styles.comment_item} key={index}>
                                     <div className={styles.student_avatar}>
-                                      <img src={item.avatar} alt="" />
+                                      <img src={item.attr2} alt="" />
                                     </div>
-                                    <div className={styles.student_name}>{item.name}</div>
-                                    <div className={styles.comment_value}>{item.evaluation.substr(0, 100)}
-                                      {item.evaluation.length > 100 && this.state[`accordion${index}`] &&
+                                    <div className={styles.student_name}>{item.userName}</div>
+                                    <div className={styles.comment_value}>{item.evaluation.substr(0, 50)}
+                                      {item.evaluation.length > 50 && !this.state[`accordion${index}`] &&
                                         <span className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>
                                           全文
                                         <span className='iconfont rightArrow'>&#xe603;</span>
                                         </span>
                                       }
-                                      {item.evaluation.length > 100 && !this.state[`accordion${index}`] &&
+                                      {item.evaluation.length > 50 && this.state[`accordion${index}`] &&
                                         <span className={styles.comment_value}>
                                           {item.evaluation.substr(100, item.evaluation.length)}
                                           <div className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>收起
@@ -403,6 +612,7 @@ class Home extends Component {
                 </div>
               </div>
             </div>
+            <div className={styles.rankingBottom}></div>
           </div>
           <Modal
             visible={showNote}

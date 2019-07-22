@@ -2,29 +2,49 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    padding-bottom: 100px;
+    .header {
+      width: 100%;
+      height: 580px;
+      position: relative;
+      z-index: 2;
+      background-image: url('../../assets/topheader.png');
+      // background-position: 50% 50%;
+      background-size: cover;
+    }
 
     .contentbox {
         width: 100%;
         text-align: center;
         background-position: 50% 0%;
-        margin-top: -150px;
+        background-image: url('../../assets/bigborder.png');
+        background-position: 50% 12%;
+        margin-top: -80px;
         padding-top: 150px;
 
-        // background-image: url('../../assets/content-bg.png');
         .selection {
             // height: 150px;
-            width: 100%;
-            position: relative;
-            // background-image: url('../../assets/box1-bg.png');
-            background-repeat: no-repeat;
-            background-position: 50% 0%;
+            width: 714px;
+            margin: 0 auto;
+            // position: relative;
+            // background-image: url('../../assets/liketeach.png');
+            // background-repeat: no-repeat;
+            // background-position: 50% 0%;
             text-align: center;
             z-index: 3;
+            background: #FFF9ED;
             // margin: 0 auto;
-            margin-top: 130px;
-            padding-top: 130px;
-
+            // margin-top: 130px;
+            // padding-top: 130px;
+            padding-bottom: 25px;
+            .topteach {
+              width: 714px;
+              background-image: url('../../assets/liketeach.png');
+              background-size: cover;
+              height: 87px;
+              position: relative;
+              top: -48px;
+              z-index: 999;
+            }
             .cascader {
                 width: 100%;
                 display: flex;
@@ -34,13 +54,18 @@
 
                 .cascader_item {
                     padding-right: 30px;
+                    display: flex;
+                    line-height: 38px;
 
                     .title {
                         color: #333;
                         font-size: 18px;
                         padding-right: 10px;
+                        line-height: 88px;
                     }
+                    .forss {
 
+                    }
                     select {
                         margin: 0;
                     }
@@ -53,11 +78,14 @@
 
             .cascader_itemone {
                 margin-top: 23px;
+                padding-right: 30px;
+                display: flex;
 
                 .title {
                     color: #333;
                     font-size: 18px;
                     padding-right: 12px;
+                    line-height: 88px;
                 }
 
                 select {
@@ -81,10 +109,16 @@
         }
 
         .imgboxBig {
-            // width: 100%;
-            margin-top: 12px;
+            padding-top: 20px;
+            width: 714px;
+            background: #FFF9ED;
+            margin: 0 auto;
+            max-height: 1120px;
+            overflow: hidden;
+            overflow-y: scroll;
 
             .imgBox {
+                background: #fff;
                 width: 290px;
                 height: 438px;
                 box-shadow: 0px 0px 7px 1px rgba(107, 22, 10, 0.25);
@@ -146,16 +180,30 @@
         margin-top: 80px;
         padding-bottom: 80px;
         padding-top: 140px;
-        width: 690px;
+        width: 714px;
         margin: 0 auto;
         height: 100%;
         text-align: center;
 
-        .rankingTop {}
+        .rankingTop {
+            background-image: url('../../assets/top10header.png');
+            width: 714px;
+            background-size: cover;
+            height: 87px;
+            position: relative;
+            top: 40px;
+        }
+
+        .rankingBottom {
+            background-image: url('../../assets/footerbottom.png');
+            width: 714px;
+            background-size: cover;
+            height: 87px;
+        }
 
         .rankingBox {
             margin: 0 auto;
-            width: 646px;
+            // width: 646px;
             background: #fff9ed;
             box-sizing: border-box;
             border-right: 1px solid #f0d7a3;
@@ -163,7 +211,7 @@
             padding-top: 55px;
 
             .contnetBox {
-                width: 646px;
+                // width: 646px;
                 margin: 0 auto;
 
                 .titleBox {
@@ -205,17 +253,17 @@
                         }
 
                         &:nth-child(1) .rank {
-                            // background-image: url('../../assets/no1.png');
+                            background-image: url('../../assets/no1.png');
                             color: #fff;
                         }
 
                         &:nth-child(2) .rank {
-                            // background-image: url('../../assets/no2.png');
+                            background-image: url('../../assets/no2.png');
                             color: #fff;
                         }
 
                         &:nth-child(3) .rank {
-                            // background-image: url('../../assets/no3.png');
+                            background-image: url('../../assets/no3.png');
                             color: #fff;
                         }
 
@@ -303,7 +351,7 @@
                                     margin: 0 25px;
                                     font-weight: 500;
                                     text-align: left;
-                                    width: 100px;
+                                    width: 120px;
                                     overflow: hidden;
                                     /*超出部分隐藏*/
                                     text-overflow: ellipsis;
@@ -313,7 +361,7 @@
                                 }
 
                                 .comment_value {
-                                    width: 800px;
+                                    width: 365px;
                                     font-size: 16px;
                                     color: #000;
                                     text-align: left;
@@ -379,8 +427,18 @@
 }
 
 :global {
+    .am-list-item {
+        width: 240px;
+    }
+    .am-list-extra {
+      display: none !important;
+    }
+
     .am-modal-transparent {
         width: 680px;
+    }
+    .am-list-item .am-list-line .am-list-content {
+      font-size: 12px;
     }
 
     .am-modal-content {
@@ -555,4 +613,11 @@
         right: 0;
         margin-right: 30px;
     }
+}
+
+.rankingBottom {
+    background-image: url('../../assets/footerbottom.png');
+    width: 714px;
+    background-size: cover;
+    height: 87px;
 }

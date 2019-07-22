@@ -2,7 +2,7 @@ import React from 'react';
 import '../utils/flexible.js';
 import { connect } from 'dva';
 import DocumentTitle from 'react-document-title';
-import '@/assets/less/theme.less';
+// import '@/assets/less/theme.less';
 import 'swiper/dist/css/swiper.min.css';
 
 @connect(state => {

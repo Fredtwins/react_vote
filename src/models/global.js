@@ -1,4 +1,4 @@
-import { Listcity, MessageList, getTpSubjectListTop10, getDept, getTpSubjectInfo, putVote } from '@/services/home.js'
+import { Listcity, MessageList, getTpSubjectListTop10, getDept, getTpSubjectInfo, putVote, getCity, getProvince, getSchool,getUserInfo } from '@/services/home.js'
 // import { Listcity } from '../services/home'
 
 export default {
@@ -39,6 +39,26 @@ export default {
     *putVote ({ payload }, { call, put }) {
       //call 执行异步函数  put 发出一个action
       const data = yield call(putVote,payload);
+      return data
+    },
+    *getCity ({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getCity, payload);
+      return data
+    },
+    *getProvince({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getProvince, payload);
+      return data
+    },
+    *getSchool({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getSchool, payload);
+      return data
+    },
+    *getUserInfo({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getUserInfo, payload);
       return data
     },
     // *loginByPhone({ payload }, { call, put }) {

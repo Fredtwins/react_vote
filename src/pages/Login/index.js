@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './index.less';
 import { Button } from 'antd-mobile';
 import classnames from 'classnames';
-import logo from '@/assets/logo-1.png';
+// import logo from '@/assets/logo-1.png';
 // import connect from 'dva';
 
 // @connect(state => {
@@ -32,7 +32,7 @@ class Loginpage extends React.Component {
           <span className={classnames([styles.icon])} />
           &nbsp;
           <span className={styles.titleName}>
-            <img src={logo} alt='logo'/>
+            {/* <img src={logo} alt='logo'/> */}
           </span>
         </div>
         {/* <FormRule formData={this.state.formData} rule={this.state.rule} ref="validate"> */}

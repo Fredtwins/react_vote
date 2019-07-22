@@ -46,3 +46,12 @@ span {
 ::-webkit-scrollbar:horizontal {
   height: 0em;
 }
+
+.iconkongxin {
+  font-size: 22px;
+  margin-right: 10px;
+  color: #fff;
+}
+.rightArrow{
+  color:#E8493F;
+}
