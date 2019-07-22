@@ -1,4 +1,4 @@
-import { Listcity, MessageList } from '@/services/home.js'
+import { Listcity, MessageList, getTpSubjectListTop10, getDept, getTpSubjectInfo, putVote } from '@/services/home.js'
 // import { Listcity } from '../services/home'
 
 export default {
@@ -7,6 +7,7 @@ export default {
     isAgree:false,
     title:'教师投票',
     isShowQuickMenu: false,
+    PageSizelist: 2
   },
 
   effects: {
@@ -16,9 +17,30 @@ export default {
       return data
     },
     *MessageList({ payload }, { call, put }) {
+      // console.log(payload)
       const data = yield call(MessageList, payload);
       return data
-    }
+    },
+    // TOP10
+    *getTpSubjectListTop10({ payload }, { call, put }) {
+      const data = yield call(getTpSubjectListTop10, payload);
+      return data
+    },
+    *getDept ({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getDept, payload);
+      return data
+    },
+    *getTpSubjectInfo ({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(getTpSubjectInfo,payload);
+      return data
+    },
+    *putVote ({ payload }, { call, put }) {
+      //call 执行异步函数  put 发出一个action
+      const data = yield call(putVote,payload);
+      return data
+    },
     // *loginByPhone({ payload }, { call, put }) {
     //   //call 执行异步函数  put 发出一个action
     //   const data = yield call(loginByPhone, payload);
@@ -33,6 +55,12 @@ export default {
         isAgree: !state.isAgree,
       };
     },
+    PageSizelist(state, { payload }) {
+      return {
+        ...state,
+        PageSizelist: PageSizelist + 2
+      }
+    }
     // saveDict(state, { payload }) {
     //   return {
     //     ...state,

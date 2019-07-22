@@ -36,8 +36,37 @@ export async function Listcity(params) {
 }
 
 // 投票教师寄语
-export async function MessageList (params) {
-  return request1(`/tpSubject/listPage?${stringify(params)}`)
+export async function MessageList(params) {
+  return request1(`/tpSubject/listPage`, {
+    method: 'post',
+    body: params
+    // interFaceType: 'tp'
+  })
+}
+
+//查询投票列表TOP10
+export async function getTpSubjectListTop10 (params) {
+  // console.log("ininin", params)
+  return request1(`/tpSubject/list?${stringify(params)}`);
+}
+
+// 省份
+export async function getDept (params) {
+  // console.log("ininin", params)
+  return request(`/api/deptByToken?${stringify(params)}`,{
+    interFaceType: 'jq'
+  });
+}
+
+export async function getTpSubjectInfo (params) {
+  return request1(`/tpRecord/info?${stringify(params)}`);
+}
+
+export async function putVote (params) {
+  return request1(`/tpRecord/vote`, {
+    method: 'put',
+    body: params,
+  })
 }
 
 // export async function MessageList (params) {
