@@ -288,7 +288,8 @@ class Home extends Component {
     let arrtempval = val.slice(0, 1)
     console.log(arrtempval)
     this.setState({
-      cityOption: arrtempval
+      cityOption: arrtempval,
+      deptOption: ''
     })
   }
 
