@@ -379,6 +379,7 @@
                                     font-size: 16px;
                                     color: #000;
                                     text-align: left;
+                                    word-break: break-all;
                                 }
 
                                 .comment_more {
@@ -443,6 +444,10 @@
 :global {
     .am-list-item {
         width: 240px;
+        border: 1px solid #f0be73;
+        .am-list-item:nth-child(2) {
+          width: 440px !important;
+        }
     }
     .am-list-extra {
       display: none !important;

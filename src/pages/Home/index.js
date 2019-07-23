@@ -439,7 +439,7 @@ class Home extends Component {
     })
   }
   handleShowComment(id) {
-    console.log(id)
+    // console.log(id)
     const { dispatch } = this.props;
     dispatch({
       type: 'global/getTpSubjectInfo',
@@ -448,11 +448,17 @@ class Home extends Component {
         subjectId: id
       }
     }).then(res => {
-      // console.log(res.result)
+      let searchval = res.result
+      console.log(searchval)
       // console.log('----------')
-      this.setState({
-        commentList: res.result
-      })
+      if (res.result.length > 0 && res.result) {
+        this.setState({
+          commentList: res.result
+        })
+      } else if (searchval.length === 0) {
+        Toast.info('该教师暂时没有评论');
+        // alert('该教师暂时没有评论')
+      }
     })
     this.setState({
       showComment: !this.state.showComment,
@@ -724,16 +730,16 @@ class Home extends Component {
                                       <img src={item.attr2} alt="" />
                                     </div>
                                     <div className={styles.student_name}>{item.userName}</div>
-                                    <div className={styles.comment_value}>{item.evaluation.substr(0, 50)}
-                                      {item.evaluation.length > 50 && !this.state[`accordion${index}`] &&
+                                    <div className={styles.comment_value}>{item.evaluation.substr(0, 30)}
+                                      {item.evaluation.length > 30 && !this.state[`accordion${index}`] &&
                                         <span className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>
                                           全文
                                         <span className='iconfont rightArrow'>&#xe603;</span>
                                         </span>
                                       }
-                                      {item.evaluation.length > 50 && this.state[`accordion${index}`] &&
+                                      {item.evaluation.length > 30 && this.state[`accordion${index}`] &&
                                         <span className={styles.comment_value}>
-                                          {item.evaluation.substr(100, item.evaluation.length)}
+                                          {item.evaluation.substr(30, item.evaluation.length)}
                                           <div className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>收起
                                           <span className='iconfont rightArrow'>&#xe669;</span>
                                           </div>
