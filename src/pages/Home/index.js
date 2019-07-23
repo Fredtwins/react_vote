@@ -56,7 +56,8 @@ class Home extends Component {
       labelValuecity: [],
       labelValuescholl: [],
       hasToken: false,
-      showbagimg: false
+      showbagimg: false,
+      depNameteach: ''
     };
   }
 
@@ -122,8 +123,8 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getDept',
       payload: {
-        token: '80a84a8b8000016b9bcaab6680000090',
-        // token: '811af8318000016c192c04468200002c',
+        // token: '80a84a8b8000016b9bcaab6680000090',
+        token: '811af8318000016c192c04468200002c',
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
@@ -224,20 +225,22 @@ class Home extends Component {
     }).then(res => {
       console.log(res)
       let searchcity = res.result.list;
+      let cityListwan = []
       for (var i in searchcity) {
-        this.state.labelValuecity.push(searchcity[i].city)
+        cityListwan.push(searchcity[i].city)
       }
-      let arrmapcity = this.state.labelValuecity.map((item) => {
+      let arrmapcity = cityListwan.map((item) => {
         return {
           label: item,
           value: item
         }
       })
+      console.log(arrmapcity)
       this.setState({
         cityOptionlist: arrmapcity,
-        labelValuecity: this.state.labelValuecity
+        labelValuecity: cityListwan
       })
-      console.log(this.state.labelValuecity)
+      console.log(cityListwan)
     })
   }
   //获取学校数据
@@ -253,10 +256,11 @@ class Home extends Component {
     }).then(res => {
       console.log(res)
       let searchschool = res.result.list;
+      let schoolListwan = []
       for (var i in searchschool) {
-        this.state.labelValuescholl.push(searchschool[i].school)
+        schoolListwan.push(searchschool[i].school)
       }
-      let arrmapschool = this.state.labelValuescholl.map((item) => {
+      let arrmapschool = schoolListwan.map((item) => {
         return {
           label: item,
           value: item
@@ -264,7 +268,7 @@ class Home extends Component {
       })
       this.setState({
         deptOptionlist: arrmapschool,
-        labelValuescholl: this.state.labelValuescholl
+        labelValuescholl: schoolListwan
       })
     })
   }
@@ -373,6 +377,9 @@ class Home extends Component {
     const { dispatch } = this.props;
     const { pageSize } = this.state;
     // console.log(pageSize)
+    console.log(this.state.deptName)
+    console.log('-------')
+    console.log(this.state.depNameteach)
     this.setState({
       pageSize: pageSize + 2
     }, () => {
@@ -383,7 +390,7 @@ class Home extends Component {
           actId: 1,
           pageSize: pageSize,
           pageNum: 1,
-          attr4: this.state.deptName
+          attr4: this.state.depNameteach
           // token: '80a84a8b8000016b9bcaab6680000090',
         }
       }).then(res => {
@@ -414,6 +421,22 @@ class Home extends Component {
   // 选择校区
   onchangeSchool = (val) => {
     let arrmapschool = val.slice(0, 1);
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'global/MessageList',
+      payload: {
+        actId: 1,
+        pageSize: 2,
+        pageNum: 1,
+        attr4: arrmapschool[0]
+      }
+    }).then(res => {
+      console.log(res)
+      this.setState({
+        teacherList: res.result.list,
+        depNameteach: arrmapschool[0]
+      })
+    })
   }
   handleShowComment(id) {
     console.log(id)
