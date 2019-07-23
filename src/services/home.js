@@ -69,6 +69,7 @@ export async function putVote (params) {
   })
 }
 export async function getCity (params) {
+  console.log(params)
   return request1(`/tpAddress/list/1/1000/city?attr=province&${stringify(params)}`);
 }
 export async function getProvince (params) {

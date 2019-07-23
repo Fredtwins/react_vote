@@ -42,6 +42,7 @@ export default {
       return data
     },
     *getCity ({ payload }, { call, put }) {
+      console.log(payload)
       //call 执行异步函数  put 发出一个action
       const data = yield call(getCity, payload);
       return data

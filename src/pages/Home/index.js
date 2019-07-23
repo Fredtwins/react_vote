@@ -54,7 +54,9 @@ class Home extends Component {
       tempteach: [],
       labelValueprovince: {},
       labelValuecity: [],
-      labelValuescholl: []
+      labelValuescholl: [],
+      hasToken: false,
+      showbagimg: false
     };
   }
 
@@ -79,16 +81,18 @@ class Home extends Component {
     this._getTpSubjectListTop10()
     this.getProvince()
     this.getUserInfo()
+    this.getDept()
   }
   // 获取教师寄语的接口
-  getmessageLIst () {
+  getmessageLIst() {
     const { dispatch } = this.props;
     dispatch({
       type: 'global/MessageList',
       payload: {
         actId: 1,
         pageSize: 2,
-        pageNum: 1
+        pageNum: 1,
+        attr4: this.state.deptName
         // token: '80a84a8b8000016b9bcaab6680000090',
       }
     }).then(res => {
@@ -98,7 +102,17 @@ class Home extends Component {
         Toast.info(res.msg)
       } else {
         this.setState({
+          // teacherList: []
           teacherList: res.result.list
+        })
+      }
+      if (res.result.list === []) {
+        this.setState({
+          showbagimg: true
+        })
+      } else {
+        this.setState({
+          showbagimg: false
         })
       }
     })
@@ -108,12 +122,12 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getDept',
       payload: {
-        // token: '80a84a8b8000016b9bcaab6680000090',
-        token: '811af8318000016c192c04468200002c',
+        token: '80a84a8b8000016b9bcaab6680000090',
+        // token: '811af8318000016c192c04468200002c',
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
-      console.log(res.data.deptId)
+      console.log(res)
       if (res.data.deptId !== 1) {
         this.setState({
           provinceName: res.data.provinceName,
@@ -136,16 +150,22 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getUserInfo',
       payload: {
-        // token: '80a84a8b8000016b9bcaab6680000090',
         token: '80a84a8b8000016b9bcaab6680000090',
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
       console.log(res)
-      this.setState({
-        userName: res.data.nickName ? res.data.nickName : res.data.mobile,
-        userAvatar: res.data.avatar
-      })
+      if (res.code === 200) {
+        this.setState({
+          userName: res.data.nickName ? res.data.nickName : res.data.mobile,
+          userAvatar: res.data.avatar,
+          hasToken: true
+        })
+      } else {
+        this.setState({
+          hasToken: false
+        })
+      }
     })
   }
   // 获取投票前十名
@@ -173,8 +193,8 @@ class Home extends Component {
       console.log(res.result.list)
       let searchListteach = res.result.list;
       for (var i in searchListteach) {
-       this.state.tempteach.push(searchListteach[i].province);
-       //  console.log(this.state.tempteach)
+        this.state.tempteach.push(searchListteach[i].province);
+        //  console.log(this.state.tempteach)
       }
       let arrmap = this.state.tempteach.map((item) => {
         // console.log(item)
@@ -195,11 +215,11 @@ class Home extends Component {
   }
   //获取市数据
   getCity = (value) => {
-    // console.log(value)
+    console.log(value)
     this.props.dispatch({
       type: 'global/getCity',
       payload: {
-        attrValue: value
+        attrValue: value[0]
       }
     }).then(res => {
       console.log(res)
@@ -225,7 +245,7 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getSchool',
       payload: {
-        attrValue: value
+        attrValue: value[0]
         // pageNum:1,
         // pageSize:300
         // token: Taro.getStorageSync('token')
@@ -362,7 +382,8 @@ class Home extends Component {
         payload: {
           actId: 1,
           pageSize: pageSize,
-          pageNum: 1
+          pageNum: 1,
+          attr4: this.state.deptName
           // token: '80a84a8b8000016b9bcaab6680000090',
         }
       }).then(res => {
@@ -381,12 +402,18 @@ class Home extends Component {
   }
   // 选择省份
   onChangeprovience = (val) => {
-    console.log(val)
-    this.getCity(val)
+    // console.log(val)
+    let arrmapcity = val.slice(0, 1)
+    this.getCity(arrmapcity)
   }
   // 选择市区
   onChangeCity = (val) => {
-    this.getSchool(val)
+    let arrmapcity = val.slice(0, 1)
+    this.getSchool(arrmapcity)
+  }
+  // 选择校区
+  onchangeSchool = (val) => {
+    let arrmapschool = val.slice(0, 1);
   }
   handleShowComment(id) {
     console.log(id)
@@ -447,34 +474,30 @@ class Home extends Component {
       provinceName1,
       tempteach,
       labelValuecity,
-      labelValuescholl
+      labelValuescholl,
+      hasToken,
+      showbagimg
     } = this.state;
     return (
       <div className={styles.wrapBoxitem}>
         <div className={styles.header}>
         </div>
         {/* 评选你最喜爱的一位教师 */}
+        {/* {
+          hasToken &&
+        } */}
         <div className={styles.contentbox}>
-          {/* <h2 onClick={() => { alert(90) }}>评选你最喜爱的一位教师</h2> */}
-          {/* <select name="" id="">
-            <option value="11">11</option>
-          </select> */}
           <div className={styles.selection}>
-            <div className={styles.topteach}></div>
             {
-              provinceName1 &&
+              hasToken &&
+              <div className={styles.topteach}></div>
+            }
+            {
+              provinceName1 && hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
                     <span className={styles.title}>省份:</span>
-                    {/* <select
-                    defaultValue={provinceOption}
-                    onChange={this.onChangecity}
-                    placeholder="请选择省份">
-                    <option value={provinceOption}>
-                      {provinceOption}
-                    </option>
-                  </select> */}
                     <Picker
                       title="选择省份"
                       extra=""
@@ -487,7 +510,7 @@ class Home extends Component {
                       className={styles.forss}
                       okText={this.onOkprovience}
                     >
-                      <List.Item arrow='horizontal' key={index}>
+                      <List.Item arrow='horizontal'>
                         {provinceOption}
                       </List.Item>
                     </Picker>
@@ -531,19 +554,11 @@ class Home extends Component {
               </Fragment>
             }
             {
-              !provinceName1 &&
+              !provinceName1 && hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
                     <span className={styles.title}>省份:</span>
-                    {/* <select
-                    defaultValue={provinceOption}
-                    onChange={this.onChangecity}
-                    placeholder="请选择省份">
-                    <option value={provinceOption}>
-                      {provinceOption}
-                    </option>
-                  </select> */}
                     <Picker
                       title="选择省份"
                       extra=""
@@ -587,6 +602,7 @@ class Home extends Component {
                     data={deptOptionlist}
                     onOk={this.onOkschool}
                     value={labelValuescholl}
+                    onChange={this.onchangeSchool}
                     cols={1}
                     className={styles.forss}
                   // className='forss'
@@ -600,31 +616,46 @@ class Home extends Component {
             }
 
           </div>
-          <div className={styles.imgboxBig}>
-            {teacherList.map((item, index) => {
-              return (
-                <div className={styles.imgBox} key={index}>
-                  <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
-                  <div className={styles.teachlist}>{item.name}</div>
-                  <div className={styles.teachwar}>
-                    {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span>...</span>}
-                  </div>
-                  <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id, item.attr5)}><span className='iconfont iconkongxin' />投票</div>
-                </div>
-              )
-            })}
-            {
-              showListmore ?
+          {
+            hasToken &&
+            <div className={styles.imgboxBig}>
+
+              {
+                showbagimg ?
                 (
-                  <div className={styles.bottonmore} onClick={this.ClickMore}>
-                    加载更多
-                  </div>
+                  <div className={styles.bagimg}></div>
                 ) : (
-                  <LoadMore loadMore={this.state.isLoading} />
+                  <Fragment>
+                    {teacherList.map((item, index) => {
+                        return (
+
+                          <div className={styles.imgBox} key={index}>
+                            <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
+                            <div className={styles.teachlist}>{item.name}</div>
+                            <div className={styles.teachwar}>
+                              {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span>...</span>}
+                            </div>
+                            <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id, item.attr5)}><span className='iconfont iconkongxin' />投票</div>
+                          </div>
+                        )
+                      })}
+                    </Fragment>
                 )
-            }
-            <div className={styles.rankingBottom}></div>
-          </div>
+              }
+              {
+                showListmore ?
+                  (
+                    <div className={styles.bottonmore} onClick={this.ClickMore}>
+                      加载更多
+                  </div>
+                  ) : (
+                    <LoadMore loadMore={this.state.isLoading} />
+                  )
+              }
+              <div className={styles.rankingBottom}></div>
+              <div className={styles.rankingBottomright}></div>
+            </div>
+          }
           {/* top10教师排行榜 */}
           <div className={styles.ranking}>
             {/* 头部 */}
@@ -700,6 +731,7 @@ class Home extends Component {
               </div>
             </div>
             <div className={styles.rankingBottom}></div>
+            <div className={styles.rankingBottomright}></div>
           </div>
           <Modal
             visible={showNote}
