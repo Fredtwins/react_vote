@@ -50,7 +50,11 @@ class Home extends Component {
       provinceName1: false,
       cityName: '',
       deptName: '',
-      provinceName: ''
+      provinceName: '',
+      tempteach: [],
+      labelValueprovince: {},
+      labelValuecity: [],
+      labelValuescholl: []
     };
   }
 
@@ -62,15 +66,23 @@ class Home extends Component {
         token: '80a84a8b8000016b9bcaab6680000090'
       }
     }).then(res => {
-      console.log(res)
+      // console.log(res)
       this.setState({
         userId: res.data.userId,
         provinceOption: res.data.provinceName,
         cityOption: res.data.cityName,
         deptOption: res.data.deptName
       })
+      console.log(this.state.provinceOption)
     })
-    // 获取教师寄语的接口
+    this.getmessageLIst()
+    this._getTpSubjectListTop10()
+    this.getProvince()
+    this.getUserInfo()
+  }
+  // 获取教师寄语的接口
+  getmessageLIst () {
+    const { dispatch } = this.props;
     dispatch({
       type: 'global/MessageList',
       payload: {
@@ -82,6 +94,7 @@ class Home extends Component {
     }).then(res => {
       console.log(res);
       if (res.code === -1) {
+        // 活动已结束
         Toast.info(res.msg)
       } else {
         this.setState({
@@ -89,9 +102,6 @@ class Home extends Component {
         })
       }
     })
-    this._getTpSubjectListTop10()
-    this.getProvince()
-    this.getUserInfo()
   }
   // 获取校区信息
   getDept() {
@@ -112,7 +122,7 @@ class Home extends Component {
           deptName: res.data.deptName,
           userId: res.data.userId
         }, () => {
-          this.getTpSubjectList()
+          this.getmessageLIst()
         })
       } else {
         this.setState({
@@ -126,6 +136,7 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getUserInfo',
       payload: {
+        // token: '80a84a8b8000016b9bcaab6680000090',
         token: '80a84a8b8000016b9bcaab6680000090',
         // token: Taro.getStorageSync('token')
       }
@@ -160,13 +171,31 @@ class Home extends Component {
       }
     }).then(res => {
       console.log(res.result.list)
-      this.setState({
-        provinceOptionlist: res.result.list
+      let searchListteach = res.result.list;
+      for (var i in searchListteach) {
+       this.state.tempteach.push(searchListteach[i].province);
+       //  console.log(this.state.tempteach)
+      }
+      let arrmap = this.state.tempteach.map((item) => {
+        // console.log(item)
+        return {
+          label: item,
+          value: item
+        }
       })
+      // this.state.labelValueprovince.label = this.state.tempteach
+      // this.state.labelValueprovince.value = this.state.tempteach
+      // console.log(this.state.labelValueprovince)
+      this.setState({
+        provinceOptionlist: arrmap,
+        tempteach: this.state.tempteach
+      })
+      console.log(this.state.provinceOptionlist)
     })
   }
   //获取市数据
   getCity = (value) => {
+    // console.log(value)
     this.props.dispatch({
       type: 'global/getCity',
       payload: {
@@ -174,9 +203,21 @@ class Home extends Component {
       }
     }).then(res => {
       console.log(res)
-      this.setState({
-        cityOptionlist: res.result.list
+      let searchcity = res.result.list;
+      for (var i in searchcity) {
+        this.state.labelValuecity.push(searchcity[i].city)
+      }
+      let arrmapcity = this.state.labelValuecity.map((item) => {
+        return {
+          label: item,
+          value: item
+        }
       })
+      this.setState({
+        cityOptionlist: arrmapcity,
+        labelValuecity: this.state.labelValuecity
+      })
+      console.log(this.state.labelValuecity)
     })
   }
   //获取学校数据
@@ -191,9 +232,48 @@ class Home extends Component {
       }
     }).then(res => {
       console.log(res)
-      this.setState({
-        deptOptionlist: res.result.list
+      let searchschool = res.result.list;
+      for (var i in searchschool) {
+        this.state.labelValuescholl.push(searchschool[i].school)
+      }
+      let arrmapschool = this.state.labelValuescholl.map((item) => {
+        return {
+          label: item,
+          value: item
+        }
       })
+      this.setState({
+        deptOptionlist: arrmapschool,
+        labelValuescholl: this.state.labelValuescholl
+      })
+    })
+  }
+
+  // 点击确认选择省份
+  onOkprovience = (val) => {
+    let arrtempval = val.slice(0, 1)
+    console.log(arrtempval)
+    this.setState({
+      provinceOption: arrtempval,
+      cityOption: '',
+      deptOption: ''
+    })
+  }
+  // 点击确认选择城市
+  onOkcity = (val) => {
+    let arrtempval = val.slice(0, 1)
+    console.log(arrtempval)
+    this.setState({
+      cityOption: arrtempval
+    })
+  }
+
+  // 点击确认学校
+  onOkschool = (val) => {
+    let arrtempval = val.slice(0, 1);
+    console.log(arrtempval)
+    this.setState({
+      deptOption: arrtempval
     })
   }
 
@@ -300,7 +380,7 @@ class Home extends Component {
     })
   }
   // 选择省份
-  onChangecity = (val) => {
+  onChangeprovience = (val) => {
     console.log(val)
     this.getCity(val)
   }
@@ -364,7 +444,10 @@ class Home extends Component {
       provinceOptionlist,
       cityOptionlist,
       deptOptionlist,
-      provinceName1
+      provinceName1,
+      tempteach,
+      labelValuecity,
+      labelValuescholl
     } = this.state;
     return (
       <div className={styles.wrapBoxitem}>
@@ -396,14 +479,15 @@ class Home extends Component {
                       title="选择省份"
                       extra=""
                       data={provinceOptionlist}
-                      value={provinceOption}
+                      value={tempteach}
                       disabled
                       // key={index}
                       cols={1}
                       onChange={this.onChangecity}
                       className={styles.forss}
+                      okText={this.onOkprovience}
                     >
-                      <List.Item arrow='horizontal'>
+                      <List.Item arrow='horizontal' key={index}>
                         {provinceOption}
                       </List.Item>
                     </Picker>
@@ -414,7 +498,7 @@ class Home extends Component {
                       title="选择城市"
                       extra=""
                       data={cityOptionlist}
-                      value={['广东省']}
+                      value={labelValuecity}
                       cols={1}
                       disabled
                       onChange={this.onChangeCity}
@@ -433,7 +517,7 @@ class Home extends Component {
                     title="选择城市"
                     extra=""
                     data={deptOptionlist}
-                    value={['广东省']}
+                    value={labelValuescholl}
                     cols={1}
                     disabled
                     className={styles.forss}
@@ -464,10 +548,11 @@ class Home extends Component {
                       title="选择省份"
                       extra=""
                       data={provinceOptionlist}
-                      value={provinceOption}
+                      value={tempteach}
+                      onOk={this.onOkprovience}
                       // key={index}
                       cols={1}
-                      onChange={this.onChangecity}
+                      onChange={this.onChangeprovience}
                       className={styles.forss}
                     >
                       <List.Item arrow='horizontal'>
@@ -481,8 +566,9 @@ class Home extends Component {
                       title="选择城市"
                       extra=""
                       data={cityOptionlist}
-                      value={['广东省']}
+                      value={labelValuecity}
                       cols={1}
+                      onOk={this.onOkcity}
                       onChange={this.onChangeCity}
                       className={styles.forss}
                     // className='forss'
@@ -499,7 +585,8 @@ class Home extends Component {
                     title="选择城市"
                     extra=""
                     data={deptOptionlist}
-                    value={['广东省']}
+                    onOk={this.onOkschool}
+                    value={labelValuescholl}
                     cols={1}
                     className={styles.forss}
                   // className='forss'
