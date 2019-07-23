@@ -644,7 +644,7 @@ class Home extends Component {
             <div className={styles.imgboxBig}>
 
               {
-                showbagimg ?
+                showbagimg  ?
                 (
                   <div className={styles.bagimg}></div>
                 ) : (
@@ -666,7 +666,7 @@ class Home extends Component {
                 )
               }
               {
-                showListmore ?
+                showListmore && !showbagimg ?
                   (
                     <div className={styles.bottonmore} onClick={this.ClickMore}>
                       加载更多
