@@ -69,7 +69,7 @@ class Home extends Component {
     // 获取路由参数
     let params = window.location.href.split('?');
     let paramsUrl = parse(params[params.length - 1]);
-    console.log(paramsUrl)
+    console.log('app传进来的token',paramsUrl)
     this.setState({
       setTokenUrl: paramsUrl.token
     })
@@ -122,8 +122,9 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getDept',
       payload: {
-        // token: '80a84a8b8000016b9bcaab6680000090',
-        token: '811af8318000016c192c04468200002c',
+        token: '80a84a8b8000016b9bcaab6680000090', // 有校区信息
+        // token: '80e6a4d38000016c02eb8be58400002c'   //无校区信息
+        // token: '811af8318000016c192c04468200002c',
         // token: this.state.setTokenUrl
       }
     }).then(res => {
@@ -162,8 +163,8 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getUserInfo',
       payload: {
-        token: '80a84a8b8000016b9bcaab6680000090',
-        // token: setTokenUrl
+        // token: '80a84a8b8000016b9bcaab6680000090',
+        token: setTokenUrl
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
@@ -498,17 +499,6 @@ class Home extends Component {
     })
   }
 
-  clickjump = () => {
-    this.setState({
-      modal1: true
-    })
-  }
-  onClose = () => {
-    this.setState({
-      modal1: false
-    })
-  }
-
   render() {
     const {
       showNote,
@@ -687,13 +677,7 @@ class Home extends Component {
                             <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
                             <div className={styles.teachlist}>{item.name}</div>
                             <div className={styles.teachwar}>
-                              {item.attr6.substr(0, 30)}{item.attr6.length > 30 && <span onClick={this.clickjump}>...
-                                {/* <br />
-                              <span className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>
-                                          全文
-                                        <span className='iconfont rightArrow'>&#xe603;</span>
-                                        </span> */}
-                              </span>
+                              {item.attr6.substr(0, 30)}{item.attr6.length > 30 && <span>...</span>
                             }
                             </div>
                             <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id, item.attr5)}><span className='iconfont iconkongxin' />投票</div>
@@ -826,16 +810,6 @@ class Home extends Component {
             </Button>
             </div>
           </Modal>
-          <Modal
-          visible={this.state.modal1}
-          transparent
-          title="Title"
-          footer={[{ text: 'Ok', onPress: () => { console.log('ok'); this.onClose('modal1')(); } }]}
-        >
-          <div style={{ height: 100, overflow: 'scroll' }}>
-          该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！
-          </div>
-        </Modal>
         </div>
       </div>
     );
