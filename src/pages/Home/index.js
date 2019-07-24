@@ -60,7 +60,8 @@ class Home extends Component {
       hasToken: false,
       showbagimg: false,
       depNameteach: '',
-      setTokenUrl: ''
+      setTokenUrl: '',
+      modal1: false
     };
   }
   componentWillMount () {
@@ -74,31 +75,16 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/getListcity',
-      payload: {
-        token: '80a84a8b8000016b9bcaab6680000090'
-      }
-    }).then(res => {
-      // console.log(res)
-      this.setState({
-        userId: res.data.userId,
-        provinceOption: res.data.provinceName,
-        cityOption: res.data.cityName,
-        deptOption: res.data.deptName
-      })
-      console.log(this.state.provinceOption)
-    })
-    this.getmessageLIst()
-    this._getTpSubjectListTop10()
-    this.getProvince()
-    this.getUserInfo()
     this.getDept()
+    // this.getmessageLIst()
+    this._getTpSubjectListTop10()
+    // this.getProvince()
+    this.getUserInfo()
   }
   // 获取教师寄语的接口
   getmessageLIst() {
     const { dispatch } = this.props;
+    console.log(this.state.deptName)
     dispatch({
       type: 'global/MessageList',
       payload: {
@@ -131,8 +117,8 @@ class Home extends Component {
     })
   }
   // 获取校区信息
-  getDept() {
-    this.props.dispatch({
+  async getDept() {
+    await this.props.dispatch({
       type: 'global/getDept',
       payload: {
         // token: '80a84a8b8000016b9bcaab6680000090',
@@ -141,19 +127,27 @@ class Home extends Component {
       }
     }).then(res => {
       console.log(res)
-      if (res.data.deptId !== 1) {
+      if (res.data.deptId && res.data.deptId !== 1) {
         this.setState({
           provinceName: res.data.provinceName,
-          provinceName1: true,
+          provinceName1: false,
           cityName: res.data.cityName.substr(0, 3),
           deptName: res.data.deptName,
-          userId: res.data.userId
+          userId: res.data.userId,
+          provinceOption: res.data.provinceName,
+          cityOption: res.data.cityName,
+          deptOption: res.data.deptName
         }, () => {
           this.getmessageLIst()
         })
       } else {
+        this.getProvince()
+        // this.getmessageLIst()
         this.setState({
-          userId: res.data.userId
+          userId: res.data.userId,
+          deptOption: res.data.deptName,
+          showbagimg: true
+          // deptName: res.data.deptName
         })
       }
     })
@@ -165,13 +159,13 @@ class Home extends Component {
     this.props.dispatch({
       type: 'global/getUserInfo',
       payload: {
-        // token: '80a84a8b8000016b9bcaab6680000090',
-        token: setTokenUrl
+        token: '80a84a8b8000016b9bcaab6680000090',
+        // token: setTokenUrl
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
-      console.log(res)
-      console.log('-----------')
+      // console.log(res)
+      // console.log('-----------')
       if (res.code === 200) {
         this.setState({
           userName: res.data.nickName ? res.data.nickName : res.data.mobile,
@@ -314,7 +308,8 @@ class Home extends Component {
     let arrtempval = val.slice(0, 1);
     console.log(arrtempval)
     this.setState({
-      deptOption: arrtempval
+      deptOption: arrtempval,
+      showbagimg: false,
     })
   }
 
@@ -466,7 +461,7 @@ class Home extends Component {
       }
     }).then(res => {
       let searchval = res.result
-      console.log(searchval)
+      console.log(searchval.length)
       // console.log('----------')
       if (res.result.length > 0 && res.result) {
         this.setState({
@@ -498,6 +493,17 @@ class Home extends Component {
   accordionClick = (index) => {
     this.setState({
       [`accordion${index}`]: !this.state[`accordion${index}`],
+    })
+  }
+
+  clickjump = () => {
+    this.setState({
+      modal1: true
+    })
+  }
+  onClose = () => {
+    this.setState({
+      modal1: false
     })
   }
 
@@ -539,7 +545,7 @@ class Home extends Component {
               <div className={styles.topteach}></div>
             }
             {
-              provinceName1 || hasToken &&
+              provinceName1 && hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
@@ -600,7 +606,7 @@ class Home extends Component {
               </Fragment>
             }
             {
-              !provinceName1 || hasToken &&
+              !provinceName1 && hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
@@ -679,7 +685,14 @@ class Home extends Component {
                             <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
                             <div className={styles.teachlist}>{item.name}</div>
                             <div className={styles.teachwar}>
-                              {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span>...</span>}
+                              {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span onClick={this.clickjump}>...
+                                {/* <br />
+                              <span className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>
+                                          全文
+                                        <span className='iconfont rightArrow'>&#xe603;</span>
+                                        </span> */}
+                              </span>
+                            }
                             </div>
                             <div className={styles.buttonBox} onClick={this.ClickBtn.bind(this, item.id, item.attr5)}><span className='iconfont iconkongxin' />投票</div>
                           </div>
@@ -811,6 +824,16 @@ class Home extends Component {
             </Button>
             </div>
           </Modal>
+          <Modal
+          visible={this.state.modal1}
+          transparent
+          title="Title"
+          footer={[{ text: 'Ok', onPress: () => { console.log('ok'); this.onClose('modal1')(); } }]}
+        >
+          <div style={{ height: 100, overflow: 'scroll' }}>
+          该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！该老师对工作兢兢业业，对学员耐心付出，无私奉献，是一位务实的好老师！
+          </div>
+        </Modal>
         </div>
       </div>
     );
