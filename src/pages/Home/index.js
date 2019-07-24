@@ -61,11 +61,12 @@ class Home extends Component {
       showbagimg: false,
       depNameteach: '',
       setTokenUrl: '',
-      modal1: false
+      modal1: false,
+      deptteachname: ''
     };
   }
   componentWillMount () {
-    // 获取路由参数 更新vid
+    // 获取路由参数
     let params = window.location.href.split('?');
     let paramsUrl = parse(params[params.length - 1]);
     console.log(paramsUrl)
@@ -117,26 +118,27 @@ class Home extends Component {
     })
   }
   // 获取校区信息
-  async getDept() {
-    await this.props.dispatch({
+  getDept() {
+    this.props.dispatch({
       type: 'global/getDept',
       payload: {
         // token: '80a84a8b8000016b9bcaab6680000090',
         token: '811af8318000016c192c04468200002c',
-        // token: Taro.getStorageSync('token')
+        // token: this.state.setTokenUrl
       }
     }).then(res => {
       console.log(res)
       if (res.data.deptId && res.data.deptId !== 1) {
         this.setState({
           provinceName: res.data.provinceName,
-          provinceName1: false,
+          provinceName1: true,
           cityName: res.data.cityName.substr(0, 3),
           deptName: res.data.deptName,
           userId: res.data.userId,
           provinceOption: res.data.provinceName,
           cityOption: res.data.cityName,
-          deptOption: res.data.deptName
+          deptOption: res.data.deptName,
+          deptteachname: res.data.deptName
         }, () => {
           this.getmessageLIst()
         })
@@ -146,13 +148,14 @@ class Home extends Component {
         this.setState({
           userId: res.data.userId,
           deptOption: res.data.deptName,
+          deptteachname: res.data.deptName,
           showbagimg: true
           // deptName: res.data.deptName
         })
       }
     })
   }
-  //获取用户信息
+  //获取用户登陆点击进来的信息
   getUserInfo() {
     // console.log(Taro.getStorageSync('token'))
     const { setTokenUrl } = this.state;
@@ -310,6 +313,7 @@ class Home extends Component {
     this.setState({
       deptOption: arrtempval,
       showbagimg: false,
+      deptteachname: arrtempval[0]
     })
   }
 
@@ -389,9 +393,7 @@ class Home extends Component {
     const { dispatch } = this.props;
     const { pageSize } = this.state;
     // console.log(pageSize)
-    console.log(this.state.deptName)
-    console.log('-------')
-    console.log(this.state.depNameteach)
+    console.log(this.state.deptteachname)
     this.setState({
       pageSize: pageSize + 2
     }, () => {
@@ -402,7 +404,7 @@ class Home extends Component {
           actId: 1,
           pageSize: pageSize,
           pageNum: 1,
-          attr4: this.state.depNameteach
+          attr4: this.state.deptteachname
           // token: '80a84a8b8000016b9bcaab6680000090',
         }
       }).then(res => {
@@ -685,7 +687,7 @@ class Home extends Component {
                             <img src={item.picUrl ? item.picUrl : defaultAvatar} alt="" />
                             <div className={styles.teachlist}>{item.name}</div>
                             <div className={styles.teachwar}>
-                              {item.attr6.substr(0, 25)}{item.attr6.length > 25 && <span onClick={this.clickjump}>...
+                              {item.attr6.substr(0, 30)}{item.attr6.length > 30 && <span onClick={this.clickjump}>...
                                 {/* <br />
                               <span className={styles.comment_more} onClick={this.accordionClick.bind(this, index)}>
                                           全文
