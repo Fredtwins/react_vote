@@ -6,6 +6,8 @@ import Swiper from 'swiper/dist/js/swiper.js';
 import styles from './index.less';
 // import Router from 'umi/router';
 import LoadMore from '@/components/load-more';
+// import Taro from '@/utils/factory.js';
+import { parse } from 'qs';
 
 @connect(state => {
   return {
@@ -57,8 +59,18 @@ class Home extends Component {
       labelValuescholl: [],
       hasToken: false,
       showbagimg: false,
-      depNameteach: ''
+      depNameteach: '',
+      setTokenUrl: ''
     };
+  }
+  componentWillMount () {
+    // 获取路由参数 更新vid
+    let params = window.location.href.split('?');
+    let paramsUrl = parse(params[params.length - 1]);
+    console.log(paramsUrl)
+    this.setState({
+      setTokenUrl: paramsUrl.token
+    })
   }
 
   componentDidMount() {
@@ -148,14 +160,18 @@ class Home extends Component {
   }
   //获取用户信息
   getUserInfo() {
+    // console.log(Taro.getStorageSync('token'))
+    const { setTokenUrl } = this.state;
     this.props.dispatch({
       type: 'global/getUserInfo',
       payload: {
-        token: '80a84a8b8000016b9bcaab6680000090',
+        // token: '80a84a8b8000016b9bcaab6680000090',
+        token: setTokenUrl
         // token: Taro.getStorageSync('token')
       }
     }).then(res => {
       console.log(res)
+      console.log('-----------')
       if (res.code === 200) {
         this.setState({
           userName: res.data.nickName ? res.data.nickName : res.data.mobile,
@@ -523,7 +539,7 @@ class Home extends Component {
               <div className={styles.topteach}></div>
             }
             {
-              provinceName1 && hasToken &&
+              provinceName1 || hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
@@ -584,7 +600,7 @@ class Home extends Component {
               </Fragment>
             }
             {
-              !provinceName1 && hasToken &&
+              !provinceName1 || hasToken &&
               <Fragment>
                 <div className={styles.cascader}>
                   <div className={styles.cascader_item}>
